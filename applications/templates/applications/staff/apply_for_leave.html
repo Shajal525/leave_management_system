@@ -1,0 +1,50 @@
+{% extends 'users/base.html' %}
+{% load staticfiles %}
+
+{% block middle %}
+<div class="container">
+  <div class="row h-100">
+    <div class="col-8 ml-auto text-white">
+      <form method="post" enctype="multipart/form-data" >
+
+        {% include 'snippet/form_design.html' with form=form %}
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="col-4  ml-auto text-white">
+    <table class="table table-hover table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Leave Type</th>
+          <th scope="col">Total Leave(in months)</th>
+          <th scope="col">Leave Per Year(in months)</th>
+          <th scope="col">Leave Salary Type(may vary)</th>
+          <th scope="col">Leave Depands On Day Worked</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for leave in leaves.all %}
+          <tr class='clickable-row' onclick="javascript:{document.getElementById('leave_{{leave.id}}').submit()}">
+            <th scope="row">{{ leave.leave_type }}</th>
+            <td>{{ leave.leave_number_of_months }}</td>
+            <td>{{ leave.leave_months_per_year }}</td>
+            <td>{{ leave.leave_salary_type }}</td>
+            <td>{{ leave.leave_depands_on_working_days }}</td>
+          </tr>
+
+          <form id='leave_{{leave.id}}' method="post" action="{% url 'leave_types:leave_detail' leave.id %}">
+            {% csrf_token %}
+            <input type="hidden">
+          </form>
+        {% endfor %}
+          <a href="{% static 'Leave.pdf' %}" class="btn btn-large btn-primary my-2">BD GOVT Leave Rules 1959</a>
+        {% if user.is_staff %}
+          <a href="{% url 'leave_types:create_leave' %}" class="btn btn-large btn-primary my-2 float-right">Create New Leave Type</a>
+        {% endif %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

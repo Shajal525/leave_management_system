@@ -1,0 +1,91 @@
+{% extends 'users/base.html' %}
+
+{% block middle %}
+<div class="container">
+  <div class="row h-100">
+
+    <div class="col-6 text-light">
+      {% if selected_user.image %}
+        <img src="{{ selected_user.image.url }}" class="img-fluid" height="300" width="300" />
+      {% else %}
+        <img src="" alt="Please Upload Your Picture" class="img-fluid" height="300" width="300" />
+      {% endif %}
+      <h1>{{ selected_user.full_name }}</h1>
+      <h3>{{ selected_user.email }}</h3>
+      <p>{{ selected_user.bio }}</p>
+      <br>
+      <a href="{% url 'delete_user' selected_user.id %}" class="btn btn-large active btn-primary my-2">Delete User</a>
+    </div>
+    <div class="col-6 ml-auto text-white">
+      {% if user.is_staff %}
+      <h4>Panding Applications</h4>
+        <table class="table table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Leave Type</th>
+              <th scope="col">Leave Start Date</th>
+              <th scope="col">Leave End Date:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% with pand=selected_user.panding_applications %}
+            {% for panding in pand %}
+              <tr>
+                <th scope="row">{{panding.leave_type.leave_type}}</th>
+                <td>{{ panding.leave_start_date }} days</td>
+                <td>{{ panding.leave_end_date }} days</td>
+              </tr>
+            {% endfor %}
+            {% endwith %}
+          </tbody>
+        </table>
+
+        <h4>Approved Applications</h4>
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Leave Type</th>
+                <th scope="col">Leave Start Date</th>
+                <th scope="col">Leave End Date:</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% with accep=selected_user.accepted_applications %}
+              {% for ac in accep %}
+                <tr>
+                  <th scope="row">{{ac.leave_type.leave_type}}</th>
+                  <td>{{ ac.leave_start_date }} days</td>
+                  <td>{{ ac.leave_end_date }} days</td>
+                </tr>
+              {% endfor %}
+              {% endwith %}
+            </tbody>
+          </table>
+
+          <h4>Rejected Applications</h4>
+            <table class="table table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Leave Type</th>
+                  <th scope="col">Leave Start Date</th>
+                  <th scope="col">Leave End Date:</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% with rejec=selected_user.rejected_applications %}
+                {% for rej in rejec %}
+                  <tr>
+                    <th scope="row">{{rej.leave_type.leave_type}}</th>
+                    <td>{{ rej.leave_start_date }} days</td>
+                    <td>{{ rej.leave_end_date }} days</td>
+                  </tr>
+                {% endfor %}
+                {% endwith %}
+              </tbody>
+            </table>
+      {% endif %}
+      </div>
+  </div>
+</div>
+
+{% endblock %}

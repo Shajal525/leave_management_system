@@ -1,0 +1,20 @@
+{% extends 'users/base.html' %}
+
+{% block middle %}
+
+  <div class="container text-light">
+
+    <h1>{{ leave.leave_type }}</h1>
+    <h1>{{ leave.leave_criteria }}</h1>
+    <h1>Total Leave: {{ leave.leave_number_of_months }} months</h1>
+    <h1>Leave Applicable Per Year: {{ leave.leave_months_per_year }} months</h1>
+    <h1>Leave Salary Type: {{ leave.leave_salary_type }} Pay</h1>
+    <h1>Depands On Number of Day Worked: {{ leave.leave_depands_on_working_days }}</h1>
+    <br>
+    {% if user.is_staff %}
+      <a href="{% url 'leave_types:leave_update' leave.id %}" class="btn btn-large active btn-primary my-2">Update Leave Type</a>
+      <a href="{% url 'leave_types:leave_delete' leave.id %}" class="btn btn-large btn-primary my-2">Delete Leave Type</a>
+    {% endif %}
+  </div>
+
+{% endblock %}

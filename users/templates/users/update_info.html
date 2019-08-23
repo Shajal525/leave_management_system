@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% load staticfiles %}
+
+{% block middle %}
+
+<div class="container text-white">
+  <form method="post" enctype="multipart/form-data" >
+
+    {% include 'snippet/form_design.html' with form=form %}
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a class="d-flex align-items-center" href="{% url 'password' %}">Change Password?</a>
+  </form>
+</div>
+
+{% endblock %}

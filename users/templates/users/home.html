@@ -1,0 +1,21 @@
+{% extends 'users/base.html' %}
+
+{% block middle %}
+<div class="container text-light">
+  {% if user.is_authenticated %}
+    <h1>Welcome {{ user.full_name }}</h1>
+    {% if user.image %}
+      <img src="{{ user.image.url }}" class="img-fluid" height="300" width="300" />
+    {% else %}
+      <img src="" alt="Please Upload Your Picture" class="img-fluid" height="300" width="300" />
+    {% endif %}
+    <h3>{{ user.email }}</h3>
+    <p>{{ user.bio }}</p>
+    <br>
+    <a href="{% url 'update_info' %}" class="btn btn-large active btn-primary my-2">Update Profile</a>
+  {% else %}
+    <h1>Welcome to the world of Excelence!</h1>
+  {% endif %}
+
+</div>
+{% endblock %}

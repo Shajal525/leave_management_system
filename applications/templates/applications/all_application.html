@@ -1,0 +1,78 @@
+{% extends 'users/base.html' %}
+
+
+{% block middle %}
+
+<div class="container">
+  <h3 class="text-white">Panding Applications:</h3>
+  <table class="table table-hover table-striped table-dark">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Applicant Name</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Interval</th>
+        <th scope="col">Type</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ap in all_applications %}
+        {% if ap.status == 'PANDING' %}
+          <tr class='clickable-row' onclick="javascript:{document.getElementById('ap_{{ap.id}}').submit()}">
+            <th scope="row">{{ ap.id }}</th>
+            <td>{{ ap.applicant.full_name }}</td>
+            <td>{{ ap.title }}</td>
+            <td>{{ ap.leave_start_date }} to {{ ap.leave_end_date }}</td>
+            <td>{{ ap.leave_type.leave_type }}</td>
+            <td>{{ ap.status }}</td>
+          </tr>
+
+          <form id='ap_{{ap.id}}' method="post" action="{% url 'applications:detail' ap.id %}">
+            {% csrf_token %}
+            <input type="hidden">
+          </form>
+        {% endif %}
+      {% endfor %}
+      {% if not user.is_staff %}
+        <a href="{% url 'applications:apply' %}" class="btn btn-large active btn-primary my-2">Apply for Leave</a>
+      {% endif %}
+    </tbody>
+  </table>
+  <br>
+
+  <h3 class="text-white">Archived Applications:</h3>
+  <table class="table table-hover table-striped table-dark">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Applicant Name</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Interval</th>
+        <th scope="col">Type</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ap in all_applications %}
+        {% if ap.status != 'PANDING' %}
+          <tr class='clickable-row' onclick="javascript:{document.getElementById('ap_{{ap.id}}').submit()}">
+            <th scope="row">{{ ap.id }}</th>
+            <td>{{ ap.applicant.full_name }}</td>
+            <td>{{ ap.title }}</td>
+            <td>{{ ap.leave_start_date }} to {{ ap.leave_end_date }}</td>
+            <td>{{ ap.leave_type.leave_type }}</td>
+            <td>{{ ap.status }}</td>
+          </tr>
+
+          <form id='ap_{{ap.id}}' method="post" action="{% url 'applications:detail' ap.id %}">
+            {% csrf_token %}
+            <input type="hidden">
+          </form>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

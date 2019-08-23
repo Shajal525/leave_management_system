@@ -1,0 +1,14 @@
+{% extends 'users/base.html' %}
+
+{% block middle %}
+
+<div class="container text-white">
+  <form method="post" enctype="multipart/form-data" >
+
+    {% include 'snippet/form_design.html' with form=form %}
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+{% endblock %}

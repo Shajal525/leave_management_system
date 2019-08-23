@@ -1,0 +1,48 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+
+{% block middle %}
+
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="avatar">
+					<img src="{% static 'user.png' %}" alt="Avatar">
+				</div>
+				{% if admin %}
+				<h4 class="modal-title">Admin Login</h4>
+				{% else %}
+					<h4 class="modal-title">Staff Login</h4>
+				{% endif %}
+			</div>
+			<div class="modal-body">
+				<form action="{% url 'login' admin %}" method="post">
+					{% csrf_token %}
+					<div class="form-group">
+						<input type="text" class="form-control" name="email" placeholder="Email" required="required">
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control" name="password" placeholder="Password" required="required">
+					</div>
+					{% if error != "" %}
+						<div class="alert alert-danger" role="alert">
+							{{ error }}
+						</div>
+					{% endif %}
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-lg btn-block login-btn">Login</button>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				{% if admin %}
+					<a href="{% url 'login' 0 %}">Login as Staff?</a>
+				{% else %}
+					<a href="{% url 'login' 1 %}">Login as Admin?</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

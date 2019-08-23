@@ -1,0 +1,181 @@
+{% load sidebar_tags %}
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Jekyll v3.8.5">
+  <title>Album example · Bootstrap</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/album/">
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark">
+  <header class="fixed-top">
+    <div class="collapse bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">Department of Computer Science and Ecgineering</h4>
+            <p class="text-muted">This department is under Science and Technology faculty.
+              This department started with the barth of BRUR in 2008.
+              To find out more about this department visit our website or follow our facebook page</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a href="https://cse.brur.ac.bd" class="text-white">Visit our website</a></li>
+                <li><a href="https://m.facebook.com/125893534166624" class="text-white">Follow our Facebook</a></li>
+                <li><a href="mailto:shajal525@gmail.com" class="text-white">Email me</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a href="{% url 'home' %}" class="navbar-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <strong>BRUR-CSE</strong>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Welcome</h1>
+          {% if user.is_authenticated %}
+            <p class="lead text-muted">Now that you have had your credentials to login, you must add your
+            First name, Lastname, Bio and upload your profle picture to be able to use all features of this website.
+            Good luck.</p>
+              <a href="{% url 'applications:all_applications' %}" class="btn btn-large active btn-primary my-2">Applications</a>
+              <a href="{% url 'leave_types:leave_types' %}" class="btn btn-large btn-primary my-2">Leave Types</a>
+              <a href="javascript:document.getElementById('logout').submit()" class="btn btn-primary my-2">Logout</a>
+              <form id="logout" method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <input type="hidden" />
+              </form>
+              {% else %}
+              <p class="lead text-muted">This website is only for BRUR CSE department staffs.
+                To use this website you must have credentials to log in to your account.
+                For credentials you can mail to admin asking your credentials.</p>
+              <a href="{% url 'login' 0 %}" class="btn btn-primary my-2">Login</a>
+              <a href="mailto:shajal525@gmail.com" class="btn btn-secondary my-2">Mail to admin</a>
+              {% endif %}
+          </div>
+        </section>
+        <div class="row ml-auto">
+          <div class="col-2 ml-auto text-white">
+            {% if user.is_staff %}
+              {% admin_sidebar_tags %}
+            {% elif user.is_active and not user.is_staff %}
+              <h4>Panding Applications</h4>
+                <table class="table table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Leave Type</th>
+                      <th scope="col">Leave Start Date</th>
+                      <th scope="col">Leave End Date:</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% with pand=user.panding_applications %}
+                    {% for panding in pand %}
+                      <tr>
+                        <th scope="row">{{panding.leave_type.leave_type}}</th>
+                        <td>{{ panding.leave_start_date }}</td>
+                        <td>{{ panding.leave_end_date }}</td>
+                      </tr>
+                    {% endfor %}
+                    {% endwith %}
+                  </tbody>
+                </table>
+
+                <h4>Approved Applications</h4>
+                  <table class="table table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Leave Type</th>
+                        <th scope="col">Leave Start Date</th>
+                        <th scope="col">Leave End Date:</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% with accep=user.accepted_applications %}
+                      {% for ac in accep %}
+                        <tr>
+                          <th scope="row">{{ac.leave_type.leave_type}}</th>
+                          <td>{{ ac.leave_start_date }}</td>
+                          <td>{{ ac.leave_end_date }}</td>
+                        </tr>
+                      {% endfor %}
+                      {% endwith %}
+                    </tbody>
+                  </table>
+
+                  <h4>Rejected Applications</h4>
+                    <table class="table table-dark">
+                      <thead>
+                        <tr>
+                          <th scope="col">Leave Type</th>
+                          <th scope="col">Leave Start Date</th>
+                          <th scope="col">Leave End Date:</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% with rejec=user.rejected_applications %}
+                        {% for rej in rejec %}
+                          <tr>
+                            <th scope="row">{{rej.leave_type.leave_type}}</th>
+                            <td>{{ rej.leave_start_date }}</td>
+                            <td>{{ rej.leave_end_date }}</td>
+                          </tr>
+                        {% endfor %}
+                        {% endwith %}
+                      </tbody>
+                    </table>
+            {% endif %}
+          </div>
+
+          <div class="col-10  ml-auto">
+            {% block middle %}
+            {% endblock %}
+          </div>
+        </div>
+
+      </main>
+
+      <footer class="text-muted">
+        <div class="container text-center">
+          <p>©S M Shaheduzzaman(Shajal) {% now 'Y'%}</p>
+        </div>
+      </footer>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body></html>
