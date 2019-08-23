@@ -56,12 +56,14 @@ def all_good(cleaned_f, userr):
         if ap.leave_end_date.year == cleaned_f.get('leave_start_date').year:
             this_year_leave += (ap.leave_end_date - date(ap.leave_end_date.year, 1, 1)).days + 1
     available_leaves = leave.leave_number_of_months*30 - prev_leaves
+    leave_asked = (cleaned_f.get('leave_end_date')-cleaned_f.get('leave_start_date')).days + 1
     leave_asked_this_year = (date(cleaned_f.get('leave_start_date').year, 12, 31)-cleaned_f.get('leave_start_date')).days + 1
     leave_asked_next_year = 0
     if cleaned_f.get('leave_start_date').year != cleaned_f.get('leave_end_date').year:
         leave_asked_next_year += (cleaned_f.get('leave_end_date') - date(cleaned_f.get('leave_end_date').year, 1, 1)).days + 1
+    else:
+        leave_asked_this_year = leave_asked
 
-    leave_asked = (cleaned_f.get('leave_end_date')-cleaned_f.get('leave_start_date')).days + 1
     if available_leaves >= leave_asked:
         per_year = 0
         if cleaned_f.get('leave_end_date').year >= date.today().year:
