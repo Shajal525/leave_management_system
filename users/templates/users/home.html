@@ -2,7 +2,7 @@
 
 {% block middle %}
 <div class="container text-light">
-  {% if user.is_authenticated %}
+
     <h1>Welcome {{ user.full_name }}</h1>
     {% if user.image %}
       <img src="{{ user.image.url }}" class="img-fluid" height="300" width="300" />
@@ -13,9 +13,13 @@
     <p>{{ user.bio }}</p>
     <br>
     <a href="{% url 'update_info' %}" class="btn btn-large active btn-primary my-2">Update Profile</a>
-  {% else %}
-    <h1>Here add Unniversity history and Achievements!!!</h1>
-  {% endif %}
 
 </div>
+{% endblock %}
+
+
+{% block anonymouss %}
+  <div class="container text-white text-center">
+      <h1>Here add Unniversity history and Achievements!!!</h1>
+  </div>
 {% endblock %}

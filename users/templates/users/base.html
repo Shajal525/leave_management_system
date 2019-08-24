@@ -69,12 +69,13 @@
               <p class="lead text-muted">This website is only for BRUR CSE department staffs.
                 To use this website you must have credentials to log in to your account.
                 For credentials you can mail to admin asking your credentials.</p>
-              <a href="{% url 'login' 0 %}" class="btn btn-primary my-2">Login</a>
+              <a href="{% url 'login' 0 %}" class="btn btn-primary my-2" >Login</a>
               <a href="mailto:shajal525@gmail.com" class="btn btn-secondary my-2">Mail to admin</a>
               {% endif %}
           </div>
         </section>
         <div class="row ml-auto">
+          {% if user.is_authenticated %}
           <div class="col-2 ml-auto text-white">
             {% if user.is_staff %}
               {% admin_sidebar_tags %}
@@ -150,6 +151,12 @@
           <div class="col-10  ml-auto">
             {% block middle %}
             {% endblock %}
+          </div>
+          <div class="container align-content-center bd-transparent">
+            {% else %}
+              {% block anonymouss %}
+              {% endblock %}
+            {% endif %}
           </div>
         </div>
 
