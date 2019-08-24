@@ -110,3 +110,9 @@ def passwordChangeView(request):
     else:
         form = CustomPasswordChangeForm(user=request.user)
         return render(request, 'users/password_change.html', {'form':form})
+
+def aboutView(request):
+    return render(request, 'about.html')
+
+def helpView(request):
+    return render(request, 'help.html')

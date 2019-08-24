@@ -11,6 +11,8 @@ urlpatterns = [
     path('update_info/', views.updateUserView, name='update_info'),
     path('password/', views.passwordChangeView, name='password'),
     path('users/<int:id>', views.userDetailView, name='user_detail'),
+    path('about/', views.aboutView, name='about'),
+    path('help/', views.helpView, name='help'),
     path('applications/', include('applications.urls')),
     path('leave_types/', include('leave_type.urls')),
 
